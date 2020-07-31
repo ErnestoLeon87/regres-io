@@ -7,7 +7,10 @@ const AppProvider = ({ children }) => {
 
     const [params, setParams] = useState({});
     const [page, setPage] = useState(1);
-    const state = useGetUsers(params, page);
+
+
+
+    const state = useGetUsers(params, page, setPage);
 
     return (
         <AppContext.Provider value={state}>

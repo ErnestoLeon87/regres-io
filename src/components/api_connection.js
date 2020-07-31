@@ -19,26 +19,42 @@ const reducer = (state, action) => {
             return { loading: true, users: [] }
 
         case ACTIONS.GET_DATA:
-            return { ...state, loading: false, users: action.payload.users, page: action.payload.page }
+            return {
+                ...state,
+                loading: false,
+                users: action.payload.users,
+                page: action.payload.page,
+                setPage: action.payload.setPage
+            }
 
         case ACTIONS.ERROR:
-            return { ...state, loading: false, error: true, users: [] }
+            return {
+                ...state,
+                loading: false,
+                error: true,
+                users: []
+            }
 
         case ACTIONS.UPDATE_HAS_NEXT_PAGE:
-            return { ...state, hasNextPage: action.payload.hasNextPage }
+            return {
+                ...state,
+                hasNextPage: action.payload.hasNextPage
+            }
 
         default:
             return state;
     }
 }
 
-export const useGetUsers = (params, page) => {
+export const useGetUsers = (params, page, setPage) => {
 
 
-    const [state, dispatch] = useReducer(reducer, { users: [], loading: true })
+    const [state, dispatch] = useReducer(reducer, { users: [], loading: true });
+
+    console.log(state);
+
     useEffect(() => {
         const cancelToken1 = axios.CancelToken.source();
-
         dispatch({ type: ACTIONS.MAKE_REQUEST });
 
         axios.get(BASE_URL, {
@@ -47,12 +63,16 @@ export const useGetUsers = (params, page) => {
 
         }).then(({ data }) => {
             console.log(data);
-            dispatch({ type: ACTIONS.GET_DATA, payload: { users: data.data, page: data.page } })
+            dispatch({
+                type: ACTIONS.GET_DATA,
+                payload: { users: data.data, page: data.page, setPage: setPage }
+            })
 
         }).catch(err => {
             if (axios.isCancel(err)) return;
             dispatch({ type: ACTIONS.ERROR, payload: { error: err } })
         })
+
 
         // Checking if has next page
         const cancelToken2 = axios.CancelToken.source();
@@ -61,7 +81,13 @@ export const useGetUsers = (params, page) => {
             params: { page: page + 1, ...params }
 
         }).then(({ data }) => {
-            dispatch({ type: ACTIONS.UPDATE_HAS_NEXT_PAGE, payload: { hasNextPage: data.data.length !== 0 } })
+            dispatch({
+                type: ACTIONS.UPDATE_HAS_NEXT_PAGE,
+                payload: {
+                    hasNextPage: data.data.length !== 0,
+                    setPage: setPage
+                }
+            })
 
         }).catch(err => {
             if (axios.isCancel(err)) return;

@@ -7,7 +7,7 @@ export const UserList = () => {
 
     const { users, loading, error, page, setPage, hasNextPage } = useContext(AppContext)
 
-    console.log(page);
+    console.log(setPage)
 
     return (
         <div className="m-2">

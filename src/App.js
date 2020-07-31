@@ -8,12 +8,15 @@ import { Container } from 'react-bootstrap';
 function App() {
 
   return (
-    <AppProvider>
-      <Container>
-        <h1>Regres.in User List</h1>
-        <UserList />
-      </Container>
-    </AppProvider>
+    <>
+      <AppProvider>
+        <Container>
+          <h1>Regres.in User List</h1>
+          <UserList />
+        </Container>
+      </AppProvider>
+
+    </>
   );
 }
 
