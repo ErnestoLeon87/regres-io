@@ -1,43 +1,19 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
+import { useGetUsers } from "./api_connection";
 
-const data =
-    [
-        {
-            id: 7,
-            email: "michael.lawson@reqres.in",
-            first_name: "Michael",
-            last_name: "Lawson",
-            avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/follettkyle/128.jpg"
-        },
-        {
-            id: 8,
-            email: "lindsay.ferguson@reqres.in",
-            first_name: "Lindsay",
-            last_name: "Ferguson",
-            avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/araa3185/128.jpg"
-        },
-        {
-            id: 9,
-            email: "tobias.funke@reqres.in",
-            first_name: "Tobias",
-            last_name: "Funke",
-            avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/vivekprvr/128.jpg"
-        },
-        {
-            id: 10,
-            email: "byron.fields@reqres.in",
-            first_name: "Byron",
-            last_name: "Fields",
-            avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/russoedu/128.jpg"
-        },
-    ]
+const AppContext = createContext();
 
-export const AppProvider = createContext(data);
+const AppProvider = ({ children }) => {
 
-export const AppContext = ({ children }) => {
+    const [params, setParams] = useState({});
+    const [page, setPage] = useState(1);
+    const state = useGetUsers(params, page);
+
     return (
-        <AppProvider.Provider value={data}>
+        <AppContext.Provider value={state}>
             {children}
-        </AppProvider.Provider>
+        </AppContext.Provider>
     )
 }
+
+export { AppProvider, AppContext }

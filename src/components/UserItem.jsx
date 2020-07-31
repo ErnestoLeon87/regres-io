@@ -1,9 +1,20 @@
 import React from 'react'
+import { Card } from 'react-bootstrap'
 
-export const UserItem = ({ data }) => {
+export const UserItem = ({ user }) => {
+
     return (
-        <div>
-            <h2>data.</h2>
-        </div>
+        <Card style={{ width: '14rem' }}>
+            <Card.Img variant="top" src={user.avatar} />
+            <Card.Body>
+                <Card.Title>
+                    {user.first_name}
+                </Card.Title>
+                <Card.Subtitle>
+                    <p>{user.email}</p>
+                </Card.Subtitle>
+            </Card.Body>
+        </Card>
+
     )
 }
